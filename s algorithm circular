@@ -1,0 +1,25 @@
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+
+# Sample features (encoded numerically)
+X = [[1, 1, 1, 1, 1],  # Oval, Large, Light, Smooth, Thick
+     [0, 1, 1, 1, 1],  # Circular, Large, Light, Smooth, Thick
+     [1, 1, 0, 0, 0],  # Oval, Large, Dark, Irregular, Thin
+     [0, 0, 1, 0, 1]]  # Circular, Small, Light, Irregular, Thick
+
+# Sample target
+y = [1, 1, 0, 1]  # Malignant (+) = 1, Benign (-) = 0
+
+# Split data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+# Initialize and train the Naive Bayes model
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+# Predict on the test set
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+print("Naive Bayes Accuracy:", accuracy)
