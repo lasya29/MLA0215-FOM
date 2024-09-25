@@ -1,0 +1,64 @@
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import LabelEncoder
+
+# 1. Read the dataset
+data = pd.read_csv('mobile_price_data.csv')  # Replace with the actual dataset path
+print("First 5 rows of the dataset:")
+print(data.head())
+
+# 2. Basic statistics and data types
+print("\nDataset Information:")
+print(data.info())
+print("\nBasic Statistics:")
+print(data.describe())
+
+# 3. Handling null values (replace with mode if any)
+print("\nDetecting null values...")
+null_values = data.isnull().sum()
+print(null_values)
+
+# Replacing null values with mode
+for column in data.columns:
+    if data[column].isnull().sum() > 0:
+        data[column].fillna(data[column].mode()[0], inplace=True)
+
+print("\nNull values after replacement:")
+print(data.isnull().sum())
+
+# 4. Exploring the data using a heatmap
+plt.figure(figsize=(10, 6))
+sns.heatmap(data.corr(), annot=True, cmap='coolwarm')
+plt.title('Heatmap of Correlation Between Features')
+plt.show()
+
+# 5. Splitting the data into train and test
+# Assuming 'price_range' is the target column and others are features
+X = data.drop('price_range', axis=1)  # Features
+y = data['price_range']  # Target variable
+
+# Encoding categorical data if necessary
+# If there are categorical features, use LabelEncoder
+le = LabelEncoder()
+for column in X.columns:
+    if X[column].dtype == 'object':
+        X[column] = le.fit_transform(X[column])
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 6. Fit the model using Naive Bayes
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+# 7. Predict the model
+y_pred = model.predict(X_test)
+
+# 8. Find accuracy of the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Model Accuracy: {accuracy * 100:.2f}%")
