@@ -1,0 +1,31 @@
+# Find-S Algorithm Implementation
+
+# Sample dataset
+data = [
+    ['Oval', 'Large', 'Light', 'Smooth', 'Thick', 'Malignant (+)'],
+    ['Circular', 'Large', 'Light', 'Smooth', 'Thick', 'Malignant (+)'],
+    ['Oval', 'Large', 'Dark', 'Irregular', 'Thin', 'Benign (-)'],
+    ['Circular', 'Small', 'Light', 'Irregular', 'Thick', 'Malignant (+)'],
+]
+
+# Extracting features and target
+features = [x[:-1] for x in data]
+target = [x[-1] for x in data]
+
+def find_s(features, target):
+    # Initialize the hypothesis with the most specific values
+    hypothesis = ['Ø'] * len(features[0])
+
+    for i, example in enumerate(features):
+        if target[i] == 'Malignant (+)':
+            for j in range(len(hypothesis)):
+                if hypothesis[j] == 'Ø':
+                    hypothesis[j] = example[j]
+                elif hypothesis[j] != example[j]:
+                    hypothesis[j] = '?'
+                    
+    return hypothesis
+
+# Running Find-S algorithm
+hypothesis = find_s(features, target)
+print("Final Hypothesis:", hypothesis)
