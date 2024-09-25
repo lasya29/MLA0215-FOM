@@ -1,0 +1,29 @@
+import numpy as np
+
+# Dataset as shown in the exam paper
+data = np.array([
+    ['Japan', 'Honda', 'Blue', 'Economy', '1980', 'Positive'],
+    ['Japan', 'Honda', 'Green', 'Economy', '1980', 'Positive'],
+    ['Japan', 'Toyota', 'Blue', 'Economy', '1990', 'Positive'],
+    ['Japan', 'Toyota', 'Blue', 'Sports', '1990', 'Negative'],
+    ['Japan', 'Honda', 'Blue', 'Economy', '1980', 'Positive']
+])
+
+# Separate the attributes and target
+attributes = data[:, :-1]
+target = data[:, -1]
+
+# Initialize hypothesis as the most specific
+hypothesis = ['?' for _ in range(attributes.shape[1])]
+
+# Apply the Find-S algorithm
+for i, val in enumerate(target):
+    if val == 'Positive':  # Learn only from positive examples
+        for x in range(len(hypothesis)):
+            if hypothesis[x] == '?':
+                hypothesis[x] = attributes[i][x]
+            elif hypothesis[x] != attributes[i][x]:
+                hypothesis[x] = '?'
+
+# Output the final hypothesis
+print("The final hypothesis is:", hypothesis)
