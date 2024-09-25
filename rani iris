@@ -1,0 +1,31 @@
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.metrics import mean_squared_error, accuracy_score
+
+# Sample data for Linear and Logistic Regression (You can replace with actual dataset)
+# X: Features, y: Target (continuous for Linear, binary for Logistic)
+X = np.array([[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]])
+y_linear = np.array([1, 2, 3, 4, 5])  # Continuous target for Linear Regression
+y_logistic = np.array([0, 0, 1, 1, 1])  # Binary target for Logistic Regression
+
+# Split the data into training and testing sets
+X_train, X_test, y_train_linear, y_test_linear = train_test_split(X, y_linear, test_size=0.2, random_state=42)
+X_train_log, X_test_log, y_train_log, y_test_log = train_test_split(X, y_logistic, test_size=0.2, random_state=42)
+
+# 1. Linear Regression Model
+linear_model = LinearRegression()
+linear_model.fit(X_train, y_train_linear)
+y_pred_linear = linear_model.predict(X_test)
+
+# 2. Logistic Regression Model
+logistic_model = LogisticRegression()
+logistic_model.fit(X_train_log, y_train_log)
+y_pred_logistic = logistic_model.predict(X_test_log)
+
+# Performance evaluation
+mse = mean_squared_error(y_test_linear, y_pred_linear)
+accuracy = accuracy_score(y_test_log, y_pred_logistic)
+
+print(f"Linear Regression Mean Squared Error: {mse}")
+print(f"Logistic Regression Accuracy: {accuracy * 100}%")
