@@ -1,0 +1,28 @@
+# Define the dataset
+data = [
+    ['Sunny', 'Warm', 'Normal', 'Strong', 'Warm', 'Same', 'Yes'],
+    ['Sunny', 'Warm', 'High', 'Strong', 'Warm', 'Same', 'Yes'],
+    ['Rainy', 'Cold', 'High', 'Strong', 'Warm', 'Change', 'No'],
+    ['Sunny', 'Warm', 'High', 'Strong', 'Cool', 'Change', 'Yes']
+]
+
+# Define the attributes and the target
+attributes = ['Sky', 'Air Temp', 'Humidity', 'Wind', 'Water', 'Forecast']
+target = [row[-1] for row in data]  # Last column is the target (Enjoy Sport)
+
+# Initialize the most specific hypothesis
+# Start with the most specific hypothesis which is ['0', '0', '0', '0', '0', '0']
+hypothesis = ['0'] * len(attributes)
+
+# Implement the Find-S algorithm
+for i in range(len(data)):
+    if target[i] == 'Yes':  # Consider only positive examples
+        for j in range(len(attributes)):
+            if hypothesis[j] == '0':  # If the hypothesis is '0', adopt the attribute
+                hypothesis[j] = data[i][j]
+            elif hypothesis[j] != data[i][j]:  # If there's a conflict, generalize it with '?'
+                hypothesis[j] = '?'
+
+# Print the final hypothesis
+print("The most specific hypothesis is:")
+print(hypothesis)
